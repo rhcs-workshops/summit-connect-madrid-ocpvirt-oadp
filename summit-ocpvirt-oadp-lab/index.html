@@ -65,7 +65,7 @@
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
   <nav class="nav-menu">
-    <h3 class="title"><a href="index.html" class=" query-params-link">Backup and Recovery for Virtual Machines</a></h3>
+    <h3 class="title"><a href="index.html" class=" query-params-link">Backup y Restore de máquinas virtuales</a></h3>
 <ul class="nav-list">
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
@@ -94,12 +94,12 @@
 </div>
 <div class="nav-panel-explore" data-panel="explore">
   <div class="context">
-    <span class="title">Backup and Recovery for Virtual Machines</span>
+    <span class="title">Backup y Restore de máquinas virtuales</span>
     <span class="version">master</span>
   </div>
   <ul class="components">
     <li class="component is-current">
-      <span class="title">Backup and Recovery for Virtual Machines</span>
+      <span class="title">Backup y Restore de máquinas virtuales</span>
       <ul class="versions">
         <li class="version is-current">
           <a href="index.html">master</a>
@@ -116,7 +116,7 @@
 <button class="nav-toggle"></button>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
-    <li><a href="index.html">Backup and Recovery for Virtual Machines</a></li>
+    <li><a href="index.html">Backup y Restore de máquinas virtuales</a></li>
     <li><a href="index.html">Tutorial</a></li>
   </ul>
 </nav>
@@ -132,33 +132,33 @@
 <ol class="arabic">
 <li>
 <p>Navega en el menú de la izquierda a <strong>Operators</strong> &#8594; <strong>Installed Operators</strong> y revisa que <code>All projects</code> está seleccionado. selecciona <code>OADP Operator</code>.</p>
-<div class="imageblock unresolved">
+<div class="imageblock">
 <div class="content">
-<img src="images/Backup/00_Left_Menu.png" alt="00 Left Menu">
+<img src="_images/Backup/00_Left_Menu.png" alt="00 Left Menu">
 </div>
 </div>
 </li>
 <li>
 <p>Revisa las <strong>Provided APIs</strong> disponibles. En este módulo usaremos las funciones de <code>Backup</code> y <code>Restore</code>.</p>
-<div class="imageblock unresolved">
+<div class="imageblock">
 <div class="content">
-<img src="images/Backup/01_Overview.png" alt="01 Overview">
+<img src="_images/Backup/01_Overview.png" alt="01 Overview">
 </div>
 </div>
 </li>
 <li>
 <p>Navega a la pestaña llamada <strong>DataProtectionApplication</strong>. Este objeto representa la configuración de la instancia de OADP desplegada en este cluster.</p>
-<div class="imageblock unresolved">
+<div class="imageblock">
 <div class="content">
-<img src="images/Backup/02_DPA.png" alt="02 DPA">
+<img src="_images/Backup/02_DPA.png" alt="02 DPA">
 </div>
 </div>
 </li>
 <li>
 <p>Selecciona <code>oadp-dpa</code> y revisa la definición <em>YAML</em>.</p>
-<div class="imageblock unresolved">
+<div class="imageblock">
 <div class="content">
-<img src="images/Backup/03_OADP_YAML.png" alt="03 OADP YAML">
+<img src="_images/Backup/03_OADP_YAML.png" alt="03 OADP YAML">
 </div>
 </div>
 <div class="paragraph">
@@ -185,9 +185,9 @@
 </li>
 <li>
 <p>Ve a la pestaña de <strong>Backup</strong> y seleccione <strong>Create Backup</strong></p>
-<div class="imageblock unresolved">
+<div class="imageblock">
 <div class="content">
-<img src="images/Backup/04_Backup_Tab.png" alt="04 Backup Tab">
+<img src="_images/Backup/04_Backup_Tab.png" alt="04 Backup Tab">
 </div>
 </div>
 </li>
@@ -226,7 +226,7 @@ spec:
 <p>Espere hasta que la columna <code>Status</code> cambie a <code>Completed</code>. Esto indica que se ha realizado una copia de seguridad exitosa de la máquina virtual.</p>
 <div class="imageblock unresolved">
 <div class="content">
-<img src="images/Backup/05_Backup_Completed.png" alt="05 Backup Completed">
+<img src="Backup/05_Backup_Completed.png" alt="05 Backup Completed">
 </div>
 </div>
 </li>
@@ -249,7 +249,7 @@ spec:
 <p>Cambia a la pestaña de <strong>Restore</strong> y selecciona <strong>Create Restore</strong></p>
 <div class="imageblock unresolved">
 <div class="content">
-<img src="images/Backup/06_Restore_Tab.png" alt="06 Restore Tab">
+<img src="Backup/06_Restore_Tab.png" alt="06 Restore Tab">
 </div>
 </div>
 </li>
@@ -279,7 +279,7 @@ spec:
 <p>Espera hasta que la columna de <code>Status</code> cambie a <code>Completed</code>.</p>
 <div class="imageblock unresolved">
 <div class="content">
-<img src="images/Backup/07_Restore_Completed.png" alt="07 Restore Completed">
+<img src="Backup/07_Restore_Completed.png" alt="07 Restore Completed">
 </div>
 </div>
 </li>
@@ -287,7 +287,7 @@ spec:
 <p>Vuelve a la pestaña de <strong>Virtualization</strong> &#8594; <strong>Virtual Machines</strong> y comprueba que se ha restaurado la VM <code>fedora02</code>.</p>
 <div class="imageblock unresolved">
 <div class="content">
-<img src="images/Backup/08_VM_Restored.png" alt="08 VM Restored">
+<img src="Backup/08_VM_Restored.png" alt="08 VM Restored">
 </div>
 </div>
 </li>
