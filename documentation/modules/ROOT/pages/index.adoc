@@ -70,7 +70,7 @@ Si no tiene la máquina virtual `fedora02`, cambie los selectores de etiquetas e
 . Espere hasta que la columna `Status` cambie a `Completed`. Esto indica que se ha realizado una copia de seguridad exitosa de la máquina virtual.
 
 +
-image::Backup/05_Backup_Completed.png[]
+image::Backup/06_Backup_Completed.png[]
 
 [#restore]
 == Restaura un backup
@@ -81,7 +81,7 @@ image::Backup/05_Backup_Completed.png[]
 
 . Cambia a la pestaña de *Restore* y selecciona *Create Restore*
 +
-image::Backup/06_Restore_Tab.png[]
+image::Backup/09_Restore_Tab.png[]
 
 . Cambia a la vista de YAML y reemplaza el contenido con el siguiente:
 +
@@ -106,11 +106,11 @@ spec:
 
 . Espera hasta que la columna de `Status` cambie a `Completed`.
 +
-image::Backup/07_Restore_Completed.png[]
+image::Backup/11_Restore_Completed.png[]
 
 . Vuelve a la pestaña de *Virtualization* -> *Virtual Machines* y comprueba que se ha restaurado la VM `fedora02`.
 +
-image::Backup/08_VM_Restored.png[]
+image::Backup/12_VM_Restored.png[]
 
 [#summary]
 == Conclusiones 
