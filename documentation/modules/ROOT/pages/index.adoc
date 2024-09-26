@@ -1,43 +1,43 @@
-= Backup and Recovery for Virtual Machines
+= Backup y Restore de máquinas virtuales
 :page-layout: home
 :!sectids:
 
-[.text-center.strong]
-== Review the OADP Operator
+[#operator]
+== Revisa el operador de OADP
 
-. Navigate in the left menu to *Operators* -> *Installed Operators* and ensure that `All projects` is selected. Select `OADP Operator`.
+. Navega en el menú de la izquierda a *Operators* -> *Installed Operators* y revisa que `All projects` está seleccionado. selecciona `OADP Operator`.
 +
 image::images/Backup/00_Left_Menu.png[]
 
-. Review the *Provided APIs* available. In this module, the `Backup` and `Restore` functions will be used.
+. Revisa las *Provided APIs* disponibles. En este módulo usaremos las funciones de `Backup` y `Restore`.
 +
 image::images/Backup/01_Overview.png[]
 
-. Navigate to the tab *DataProtectionApplication*. This object represents the configuration of the deployed OADP instance.
+. Navega a la pestaña llamada *DataProtectionApplication*. Este objeto representa la configuración de la instancia de OADP desplegada en este cluster.
 +
 image::images/Backup/02_DPA.png[]
 
-. Select `oadp-dpa` and review the _YAML_ definition
+. Selecciona `oadp-dpa` y revisa la definición _YAML_.
 +
 image::images/Backup/03_OADP_YAML.png[]
 +
-Notice that *OADP* has been configured by adding the `kubevirt` plugin and it has been configured to use the internal object storage bucket provided by *Red Hat Storage*.
+Te en cuenta que la instancia de *OADP* ha sido configurada añadiendo el plugin de `kubevirt` y que ha sido configurada para usar el bucket de *Red Hat Storage*.
 +
-In a production environment you would want to backup to an external storage system, however, in this lab, we are using internal object storage for the sake of convenience.
+En un entorno de producción normalmente usarías un sistema de almacenamiento externo, sin embargo, en este lab, estamos utilizando el almacenamiento interno de objetos por conveniencia.
 
 
-[.text-center.strong]
-== Create a Virtual Machine Backup
+[#backup]
+== Crear un backup de una máquina virtual
 
-You will perform a backup of the VM `fedora02`. The selection of the objects to be backed up is defined by the labels `app` and `vm.kubevirt.io/name`. This includes the VM definition, disks, and additional objects being used by the virtual machine such as config maps and secrets.
+Realizarás una copia de seguridad de la VM `fedora02`. La selección de los objetos de los que se realizará la copia de seguridad está definida por las etiquetas `app` y `vm.kubevirt.io/name`. Esto incluye la definición de VM, los discos y los objetos adicionales que utiliza la máquina virtual, como config maps y secretos.
 
-. Go back one screen to the main Operator page by clicking on the Operator name
+. Regrese a la página principal del Operador haciendo clic en el nombre del Operador
 
-. Navigate to the *Backup* tab and press *Create Backup*
+. Ve a la pestaña de *Backup* y seleccione *Create Backup*
 +
 image::images/Backup/04_Backup_Tab.png[]
 
-. Switch to the _YAML view_ and replace the content with the following one:
+. Cambia de vista a _YAML view_ y reemplaza el siguiente contenido:
 +
 [source,yaml]
 ----
@@ -61,28 +61,29 @@ spec:
   ttl: 720h0m0s
 ----
 +
-Notice that the content of this YAML indicates that any object with the labels `app: fedora02` in the namespace `vmexamples` will be backed up to the location specified in the `DataProtectionApplication` configuration.
+Tenga en cuenta que el contenido de este YAML indica que se realizará una copia de seguridad de cualquier objeto con las etiquetas `app: fedora02` en el namespace `vmexamples` en la ubicación especificada en la configuración de `DataProtectionApplication`.
 +
-[IMPORTANT]
-If you do not have the `fedora02` VM, change the label selectors in the YAML above to match a virtual machine in your environment.
+[IMPORTANTE]
+Si no tiene la máquina virtual `fedora02`, cambie los selectores de etiquetas en el YAML anterior para que coincidan con una máquina virtual en su entorno.
 
 
-. Wait till the `Status` column changes to `Completed`. This indicates that the virtual machine has been successfully backed up.
+. Espere hasta que la columna `Status` cambie a `Completed`. Esto indica que se ha realizado una copia de seguridad exitosa de la máquina virtual.
+
 +
 image::images/Backup/05_Backup_Completed.png[]
 
-[.text-center.strong]
-== Restore a backup
+[#restore]
+== Restaura un backup
 
-. Navigate to *Virtualization* -> *VirtualMachines* and delete the VM `fedora02`.
+. Navega a *Virtualization* -> *VirtualMachines* y elimina la VM `fedora02`.
 
-. Go back to *Operators* -> *Installed Operators* and select *OADP Operator*. 
+. Vuelve a la pestaña *Operators* -> *Installed Operators* y selecciona *OADP Operator*. 
 
-. Switch to the *Restore* tab and press *Create Restore*
+. Cambia a la pestaña de *Restore* y selecciona *Create Restore*
 +
 image::images/Backup/06_Restore_Tab.png[]
 
-. Switch to the YAML view and replace the content with the following one:
+. Cambia a la vista de YAML y reemplaza el contenido con el siguiente:
 +
 [source,yaml]
 ----
@@ -103,15 +104,15 @@ spec:
   restorePVs: true
 ----
 
-. Wait till the `Status` column changes to `Completed`.
+. Espera hasta que la columna de `Status` cambie a `Completed`.
 +
 image::images/Backup/07_Restore_Completed.png[]
 
-. Navigate back to *Virtualization* -> *Virtual Machines* and ensure the `fedora02` was restored.
+. Vuelve a la pestaña de *Virtualization* -> *Virtual Machines* y comprueba que se ha restaurado la VM `fedora02`.
 +
 image::images/Backup/08_VM_Restored.png[]
 
-[.text-center.strong]
-== Summary 
+[#summary]
+== Conclusiones 
 
-Protecting virtual machines is a critical aspect of a virtualization platform. OpenShift Virtualization provides multiple methods that enable native protection, for example using OADP, or allowing storage and backup partners to integrate their offerings. If you have questions about how to protect virtual machines, please don't hesitate to ask the proctors for the workshop or reach out to your vendor to determine their compatibility with OpenShift Virtualization.
+La protección de las máquinas virtuales es un aspecto crítico de una plataforma de virtualización. OpenShift Virtualization proporciona múltiples métodos que permiten la protección nativa, por ejemplo, utilizando OADP o permitiendo la integración con otras soluciones de terceros. Si tiene cualquier duda sobre cómo proteger las máquinas virtuales, no dude en consultar a los supervisores del taller o comunicarse con su proveedor para determinar su compatibilidad con OpenShift Virtualization.

@@ -1,3 +1,5 @@
-* xref:01-setup.adoc[1. Setup]
-** xref:01-setup.adoc#prerequisite[Prerequisites]
-** xref:01-setup.adoc#minikube[Setup Minikube]
+* xref:index.adoc[Tutorial]
+** xref:index#operator[Review the OADP Operator]
+** xref:index#backup[Create a backup]
+** xref:index#restore[Restore a backup]
+** xref:index#summary[Summary]
