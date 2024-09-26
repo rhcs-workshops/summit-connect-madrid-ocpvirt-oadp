@@ -5,7 +5,7 @@
 [#operator]
 == Revisa el operador de OADP
 
-. Navega en el menú de la izquierda a *Operators* -> *Installed Operators* y revisa que `All projects` está seleccionado. selecciona `OADP Operator`.
+. Navega en el menú de la izquierda a *Operators* -> *Installed Operators* y revisa que `All projects` está seleccionado. Selecciona `OADP Operator`.
 +
 image::Backup/00_Left_Menu.png[]
 
@@ -21,7 +21,7 @@ image::Backup/02_DPA.png[]
 +
 image::Backup/03_OADP_YAML.png[]
 +
-Te en cuenta que la instancia de *OADP* ha sido configurada añadiendo el plugin de `kubevirt` y que ha sido configurada para usar el bucket de *Red Hat Storage*.
+Tenga en cuenta que la instancia de *OADP* ha sido configurada añadiendo el plugin de `kubevirt` y que ha sido configurada para usar el bucket de *Red Hat Storage*.
 +
 En un entorno de producción normalmente usarías un sistema de almacenamiento externo, sin embargo, en este lab, estamos utilizando el almacenamiento interno de objetos por conveniencia.
 
