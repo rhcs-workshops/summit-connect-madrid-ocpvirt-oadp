@@ -1,5 +1,5 @@
 name: summit-ocpvirt-oadp-lab
-title: Backup and Recovery for Virtual Machines
+title: Backup y Restore de máquinas virtuales
 version: master
 nav:
   - modules/ROOT/nav.adoc
