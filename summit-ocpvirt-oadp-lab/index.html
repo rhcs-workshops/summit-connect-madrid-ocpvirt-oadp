@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Backup y Restore de máquinas virtuales :: Summit-Connect-Madrid-OCPVirt-OADP</title>
+    <link rel="canonical" href="https://github.com/rhcs-workshops/summit-connect-madrid-ocpvirt-oadp/summit-ocpvirt-oadp-lab/index.html">
+    <meta name="generator" content="Antora 3.0.0">
+    <link rel="stylesheet" href="../_/css/site.css">
+<link rel="icon" href="../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img
+          src="../_/img/header_logo.png" height="40px" alt="Red Hat Developer Program"></a>
+      <a class="navbar-item" href="https://github.com/rhcs-workshops/summit-connect-madrid-ocpvirt-oadp">Summit-Connect-Madrid-OCPVirt-OADP</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Books</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">CheatSheets</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">CheatSheet A</a>
+            <a class="navbar-item" href="#">CheatSheet B</a>
+            <a class="navbar-item" href="#">CheatSheet C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Upcoming Events</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Event A</a>
+            <a class="navbar-item" href="#">Event B</a>
+            <a class="navbar-item" href="#">Event C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">More Tutorials</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Tutorial A</a>
+            <a class="navbar-item" href="#">Tutorial B</a>
+            <a class="navbar-item" href="#">Tutorial C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="summit-ocpvirt-oadp-lab" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html" class=" query-params-link">Backup and Recovery for Virtual Machines</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Tutorial</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#operator">Revisa el operador de OADP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#backup">Crea un backup</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#restore">Restaura un backup</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#summary">Conclusiones</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Backup and Recovery for Virtual Machines</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Backup and Recovery for Virtual Machines</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Backup and Recovery for Virtual Machines</a></li>
+    <li><a href="index.html">Tutorial</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/rhcs-workshops/summit-connect-madrid-ocpvirt-oadp/edit/master/documentation/modules/ROOT/pages/index.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Backup y Restore de máquinas virtuales</h1>
+<div class="sect1">
+<h2 id="operator"><a class="anchor" href="#operator"></a>Revisa el operador de OADP</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navega en el menú de la izquierda a <strong>Operators</strong> &#8594; <strong>Installed Operators</strong> y revisa que <code>All projects</code> está seleccionado. selecciona <code>OADP Operator</code>.</p>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="images/Backup/00_Left_Menu.png" alt="00 Left Menu">
+</div>
+</div>
+</li>
+<li>
+<p>Revisa las <strong>Provided APIs</strong> disponibles. En este módulo usaremos las funciones de <code>Backup</code> y <code>Restore</code>.</p>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="images/Backup/01_Overview.png" alt="01 Overview">
+</div>
+</div>
+</li>
+<li>
+<p>Navega a la pestaña llamada <strong>DataProtectionApplication</strong>. Este objeto representa la configuración de la instancia de OADP desplegada en este cluster.</p>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="images/Backup/02_DPA.png" alt="02 DPA">
+</div>
+</div>
+</li>
+<li>
+<p>Selecciona <code>oadp-dpa</code> y revisa la definición <em>YAML</em>.</p>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="images/Backup/03_OADP_YAML.png" alt="03 OADP YAML">
+</div>
+</div>
+<div class="paragraph">
+<p>Te en cuenta que la instancia de <strong>OADP</strong> ha sido configurada añadiendo el plugin de <code>kubevirt</code> y que ha sido configurada para usar el bucket de <strong>Red Hat Storage</strong>.</p>
+</div>
+<div class="paragraph">
+<p>En un entorno de producción normalmente usarías un sistema de almacenamiento externo, sin embargo, en este lab, estamos utilizando el almacenamiento interno de objetos por conveniencia.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="backup"><a class="anchor" href="#backup"></a>Crear un backup de una máquina virtual</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Realizarás una copia de seguridad de la VM <code>fedora02</code>. La selección de los objetos de los que se realizará la copia de seguridad está definida por las etiquetas <code>app</code> y <code>vm.kubevirt.io/name</code>. Esto incluye la definición de VM, los discos y los objetos adicionales que utiliza la máquina virtual, como config maps y secretos.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Regrese a la página principal del Operador haciendo clic en el nombre del Operador</p>
+</li>
+<li>
+<p>Ve a la pestaña de <strong>Backup</strong> y seleccione <strong>Create Backup</strong></p>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="images/Backup/04_Backup_Tab.png" alt="04 Backup Tab">
+</div>
+</div>
+</li>
+<li>
+<p>Cambia de vista a <em>YAML view</em> y reemplaza el siguiente contenido:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: velero.io/v1
+kind: Backup
+metadata:
+  name: backup-fedora02
+  labels:
+    velero.io/storage-location: default
+  namespace: openshift-adp
+spec:
+  hooks: {}
+  orLabelSelectors:
+  - matchLabels:
+      app: fedora02
+  - matchLabels:
+      vm.kubevirt.io/name: fedora02
+  includedNamespaces:
+  - vmexamples
+  storageLocation: oadp-dpa-1
+  ttl: 720h0m0s</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Tenga en cuenta que el contenido de este YAML indica que se realizará una copia de seguridad de cualquier objeto con las etiquetas <code>app: fedora02</code> en el namespace <code>vmexamples</code> en la ubicación especificada en la configuración de <code>DataProtectionApplication</code>.</p>
+</div>
+<div class="paragraph">
+<p>Si no tiene la máquina virtual <code>fedora02</code>, cambie los selectores de etiquetas en el YAML anterior para que coincidan con una máquina virtual en su entorno.</p>
+</div>
+</li>
+<li>
+<p>Espere hasta que la columna <code>Status</code> cambie a <code>Completed</code>. Esto indica que se ha realizado una copia de seguridad exitosa de la máquina virtual.</p>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="images/Backup/05_Backup_Completed.png" alt="05 Backup Completed">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="restore"><a class="anchor" href="#restore"></a>Restaura un backup</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navega a <strong>Virtualization</strong> &#8594; <strong>VirtualMachines</strong> y elimina la VM <code>fedora02</code>.</p>
+</li>
+<li>
+<p>Vuelve a la pestaña <strong>Operators</strong> &#8594; <strong>Installed Operators</strong> y selecciona <strong>OADP Operator</strong>.</p>
+</li>
+<li>
+<p>Cambia a la pestaña de <strong>Restore</strong> y selecciona <strong>Create Restore</strong></p>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="images/Backup/06_Restore_Tab.png" alt="06 Restore Tab">
+</div>
+</div>
+</li>
+<li>
+<p>Cambia a la vista de YAML y reemplaza el contenido con el siguiente:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: velero.io/v1
+kind: Restore
+metadata:
+  name: restore-fedora02
+  namespace: openshift-adp
+spec:
+  backupName: backup-fedora02
+  includedResources: []
+  excludedResources:
+  - nodes
+  - events
+  - events.events.k8s.io
+  - backups.velero.io
+  - restores.velero.io
+  restorePVs: true</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Espera hasta que la columna de <code>Status</code> cambie a <code>Completed</code>.</p>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="images/Backup/07_Restore_Completed.png" alt="07 Restore Completed">
+</div>
+</div>
+</li>
+<li>
+<p>Vuelve a la pestaña de <strong>Virtualization</strong> &#8594; <strong>Virtual Machines</strong> y comprueba que se ha restaurado la VM <code>fedora02</code>.</p>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="images/Backup/08_VM_Restored.png" alt="08 VM Restored">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="summary"><a class="anchor" href="#summary"></a>Conclusiones</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>La protección de las máquinas virtuales es un aspecto crítico de una plataforma de virtualización. OpenShift Virtualization proporciona múltiples métodos que permiten la protección nativa, por ejemplo, utilizando OADP o permitiendo la integración con otras soluciones de terceros. Si tiene cualquier duda sobre cómo proteger las máquinas virtuales, no dude en consultar a los supervisores del taller o comunicarse con su proveedor para determinar su compatibilidad con OpenShift Virtualization.</p>
+</div>
+</div>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <a class="rhd-logo" href="https://developers.redhat.com" target="_blank"></div>
+</footer>
+<script src="../_/js/vendor/clipboard.js"></script>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
