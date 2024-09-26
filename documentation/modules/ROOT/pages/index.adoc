@@ -7,19 +7,19 @@
 
 . Navega en el menú de la izquierda a *Operators* -> *Installed Operators* y revisa que `All projects` está seleccionado. selecciona `OADP Operator`.
 +
-image::images/Backup/00_Left_Menu.png[]
+image::Backup/00_Left_Menu.png[]
 
 . Revisa las *Provided APIs* disponibles. En este módulo usaremos las funciones de `Backup` y `Restore`.
 +
-image::images/Backup/01_Overview.png[]
+image::Backup/01_Overview.png[]
 
 . Navega a la pestaña llamada *DataProtectionApplication*. Este objeto representa la configuración de la instancia de OADP desplegada en este cluster.
 +
-image::images/Backup/02_DPA.png[]
+image::Backup/02_DPA.png[]
 
 . Selecciona `oadp-dpa` y revisa la definición _YAML_.
 +
-image::images/Backup/03_OADP_YAML.png[]
+image::Backup/03_OADP_YAML.png[]
 +
 Te en cuenta que la instancia de *OADP* ha sido configurada añadiendo el plugin de `kubevirt` y que ha sido configurada para usar el bucket de *Red Hat Storage*.
 +
@@ -35,7 +35,7 @@ Realizarás una copia de seguridad de la VM `fedora02`. La selección de los obj
 
 . Ve a la pestaña de *Backup* y seleccione *Create Backup*
 +
-image::images/Backup/04_Backup_Tab.png[]
+image::Backup/04_Backup_Tab.png[]
 
 . Cambia de vista a _YAML view_ y reemplaza el siguiente contenido:
 +
@@ -70,7 +70,7 @@ Si no tiene la máquina virtual `fedora02`, cambie los selectores de etiquetas e
 . Espere hasta que la columna `Status` cambie a `Completed`. Esto indica que se ha realizado una copia de seguridad exitosa de la máquina virtual.
 
 +
-image::images/Backup/05_Backup_Completed.png[]
+image::Backup/05_Backup_Completed.png[]
 
 [#restore]
 == Restaura un backup
@@ -81,7 +81,7 @@ image::images/Backup/05_Backup_Completed.png[]
 
 . Cambia a la pestaña de *Restore* y selecciona *Create Restore*
 +
-image::images/Backup/06_Restore_Tab.png[]
+image::Backup/06_Restore_Tab.png[]
 
 . Cambia a la vista de YAML y reemplaza el contenido con el siguiente:
 +
@@ -106,11 +106,11 @@ spec:
 
 . Espera hasta que la columna de `Status` cambie a `Completed`.
 +
-image::images/Backup/07_Restore_Completed.png[]
+image::Backup/07_Restore_Completed.png[]
 
 . Vuelve a la pestaña de *Virtualization* -> *Virtual Machines* y comprueba que se ha restaurado la VM `fedora02`.
 +
-image::images/Backup/08_VM_Restored.png[]
+image::Backup/08_VM_Restored.png[]
 
 [#summary]
 == Conclusiones 
