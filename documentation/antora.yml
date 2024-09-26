@@ -1,5 +1,5 @@
-name: template-tutorial
-title: Template Tutorial
+name: summit-ocpvirt-oadp-lab
+title: Backup and Recovery for Virtual Machines
 version: master
 nav:
   - modules/ROOT/nav.adoc

@@ -1,20 +1,118 @@
-= Welcome to Template Tutorial
+= Backup y Restore de máquinas virtuales
 :page-layout: home
 :!sectids:
 
-[.text-center.strong]
-== Publish Services to Kubernetes
+[#operator]
+== Revisa el operador de OADP
 
-A Kubernetes tutorial to show how you can deploy a Java service to a Kubernetes cluster as it was a child game.
+. Navega en el menú de la izquierda a *Operators* -> *Installed Operators* y revisa que `All projects` está seleccionado. selecciona `OADP Operator`.
++
+image::images/Backup/00_Left_Menu.png[]
 
-[.tiles.browse]
-== Browse modules
+. Revisa las *Provided APIs* disponibles. En este módulo usaremos las funciones de `Backup` y `Restore`.
++
+image::images/Backup/01_Overview.png[]
 
-[.tile]
-.xref:01-setup.adoc[Get Started]
-* xref:01-setup.adoc#minikube[Minikube]
+. Navega a la pestaña llamada *DataProtectionApplication*. Este objeto representa la configuración de la instancia de OADP desplegada en este cluster.
++
+image::images/Backup/02_DPA.png[]
 
-[.tile]
-.xref:02-deploy.adoc[Deploying]
-* xref:02-deploy.adoc#package[Package the Application]
-* xref:02-deploy.adoc#deploy[Deploy the Application]
+. Selecciona `oadp-dpa` y revisa la definición _YAML_.
++
+image::images/Backup/03_OADP_YAML.png[]
++
+Te en cuenta que la instancia de *OADP* ha sido configurada añadiendo el plugin de `kubevirt` y que ha sido configurada para usar el bucket de *Red Hat Storage*.
++
+En un entorno de producción normalmente usarías un sistema de almacenamiento externo, sin embargo, en este lab, estamos utilizando el almacenamiento interno de objetos por conveniencia.
+
+
+[#backup]
+== Crear un backup de una máquina virtual
+
+Realizarás una copia de seguridad de la VM `fedora02`. La selección de los objetos de los que se realizará la copia de seguridad está definida por las etiquetas `app` y `vm.kubevirt.io/name`. Esto incluye la definición de VM, los discos y los objetos adicionales que utiliza la máquina virtual, como config maps y secretos.
+
+. Regrese a la página principal del Operador haciendo clic en el nombre del Operador
+
+. Ve a la pestaña de *Backup* y seleccione *Create Backup*
++
+image::images/Backup/04_Backup_Tab.png[]
+
+. Cambia de vista a _YAML view_ y reemplaza el siguiente contenido:
++
+[source,yaml]
+----
+apiVersion: velero.io/v1
+kind: Backup
+metadata:
+  name: backup-fedora02
+  labels:
+    velero.io/storage-location: default
+  namespace: openshift-adp
+spec:
+  hooks: {}
+  orLabelSelectors:
+  - matchLabels:
+      app: fedora02
+  - matchLabels:
+      vm.kubevirt.io/name: fedora02
+  includedNamespaces:
+  - vmexamples
+  storageLocation: oadp-dpa-1
+  ttl: 720h0m0s
+----
++
+Tenga en cuenta que el contenido de este YAML indica que se realizará una copia de seguridad de cualquier objeto con las etiquetas `app: fedora02` en el namespace `vmexamples` en la ubicación especificada en la configuración de `DataProtectionApplication`.
++
+[IMPORTANTE]
+Si no tiene la máquina virtual `fedora02`, cambie los selectores de etiquetas en el YAML anterior para que coincidan con una máquina virtual en su entorno.
+
+
+. Espere hasta que la columna `Status` cambie a `Completed`. Esto indica que se ha realizado una copia de seguridad exitosa de la máquina virtual.
+
++
+image::images/Backup/05_Backup_Completed.png[]
+
+[#restore]
+== Restaura un backup
+
+. Navega a *Virtualization* -> *VirtualMachines* y elimina la VM `fedora02`.
+
+. Vuelve a la pestaña *Operators* -> *Installed Operators* y selecciona *OADP Operator*. 
+
+. Cambia a la pestaña de *Restore* y selecciona *Create Restore*
++
+image::images/Backup/06_Restore_Tab.png[]
+
+. Cambia a la vista de YAML y reemplaza el contenido con el siguiente:
++
+[source,yaml]
+----
+apiVersion: velero.io/v1
+kind: Restore
+metadata:
+  name: restore-fedora02
+  namespace: openshift-adp
+spec:
+  backupName: backup-fedora02
+  includedResources: [] 
+  excludedResources:
+  - nodes
+  - events
+  - events.events.k8s.io
+  - backups.velero.io
+  - restores.velero.io
+  restorePVs: true
+----
+
+. Espera hasta que la columna de `Status` cambie a `Completed`.
++
+image::images/Backup/07_Restore_Completed.png[]
+
+. Vuelve a la pestaña de *Virtualization* -> *Virtual Machines* y comprueba que se ha restaurado la VM `fedora02`.
++
+image::images/Backup/08_VM_Restored.png[]
+
+[#summary]
+== Conclusiones 
+
+La protección de las máquinas virtuales es un aspecto crítico de una plataforma de virtualización. OpenShift Virtualization proporciona múltiples métodos que permiten la protección nativa, por ejemplo, utilizando OADP o permitiendo la integración con otras soluciones de terceros. Si tiene cualquier duda sobre cómo proteger las máquinas virtuales, no dude en consultar a los supervisores del taller o comunicarse con su proveedor para determinar su compatibilidad con OpenShift Virtualization.
