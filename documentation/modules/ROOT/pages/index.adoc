@@ -29,9 +29,11 @@ En un entorno de producción normalmente usarías un sistema de almacenamiento e
 [#backup]
 == Crear un backup de una máquina virtual
 
-Realizarás una copia de seguridad de la VM `fedora02`. La selección de los objetos de los que se realizará la copia de seguridad está definida por las etiquetas `app` y `vm.kubevirt.io/name`. Esto incluye la definición de VM, los discos y los objetos adicionales que utiliza la máquina virtual, como config maps y secretos.
+Realizarás una copia de seguridad de la VM `fedora01`. La selección de los objetos de los que se realizará la copia de seguridad está definida por las etiquetas `app` y `vm.kubevirt.io/name`. Esto incluye la definición de VM, los discos y los objetos adicionales que utiliza la máquina virtual, como config maps y secretos.
 
 . Regrese a la página principal del Operador haciendo clic en el nombre del Operador
+
+WARNING: Debe estar seleccionado el proyecto "oadp-userX" según esté usando el usuario user1, user2 o user3.
 
 . Ve a la pestaña de *Backup* y seleccione *Create Backup*
 +
@@ -44,27 +46,27 @@ image::Backup/04_Backup_Tab.png[]
 apiVersion: velero.io/v1
 kind: Backup
 metadata:
-  name: backup-fedora02
+  name: backup-fedora01
   labels:
     velero.io/storage-location: default
-  namespace: openshift-adp
+  namespace: oadp-{user1|user2|user3} 
 spec:
   hooks: {}
   orLabelSelectors:
   - matchLabels:
-      app: fedora02
+      app: fedora01
   - matchLabels:
-      vm.kubevirt.io/name: fedora02
+      vm.kubevirt.io/name: fedora01
   includedNamespaces:
-  - vmexamples
+  - vmexamples-{user1|user2|user3} 
   storageLocation: oadp-dpa-1
   ttl: 720h0m0s
 ----
 +
-Tenga en cuenta que el contenido de este YAML indica que se realizará una copia de seguridad de cualquier objeto con las etiquetas `app: fedora02` en el namespace `vmexamples` en la ubicación especificada en la configuración de `DataProtectionApplication`.
+Tenga en cuenta que el contenido de este YAML indica que se realizará una copia de seguridad de cualquier objeto con las etiquetas `app: fedora01` que estén creadas en el namespace `vmexamples-user1` o `vmexamples-user2` o `vmexamples-user3` *(DEBE ESPECIFICAR  CUAL DE LOS 3 USUARIOS ESTÁ USANDO EN LA SESIÓN)* en la ubicación especificada en la configuración de `DataProtectionApplication`.
 +
 [IMPORTANTE]
-Si no tiene la máquina virtual `fedora02`, cambie los selectores de etiquetas en el YAML anterior para que coincidan con una máquina virtual en su entorno.
+Si no tiene la máquina virtual `fedora01`, cambie los selectores de etiquetas en el YAML anterior para que coincidan con una máquina virtual en su entorno.
 
 
 . Espere hasta que la columna `Status` cambie a `Completed`. Esto indica que se ha realizado una copia de seguridad exitosa de la máquina virtual.
@@ -75,9 +77,13 @@ image::Backup/06_Backup_Completed.png[]
 [#restore]
 == Restaura un backup
 
-. Navega a *Virtualization* -> *VirtualMachines* y elimina la VM `fedora02`.
+. Navega a *Virtualization* -> *VirtualMachines* y elimina la VM `fedora01`.
+
+WARNING: Debe estar seleccionado el proyecto "vmexamples-userX" según esté usando el usuario user1, user2 o user3.
 
 . Vuelve a la pestaña *Operators* -> *Installed Operators* y selecciona *OADP Operator*. 
+
+WARNING: Debe estar seleccionado el proyecto "oadp-userX" según esté usando el usuario user1, user2 o user3.
 
 . Cambia a la pestaña de *Restore* y selecciona *Create Restore*
 +
@@ -90,10 +96,10 @@ image::Backup/09_Restore_Tab.png[]
 apiVersion: velero.io/v1
 kind: Restore
 metadata:
-  name: restore-fedora02
+  name: restore-fedora01
   namespace: openshift-adp
 spec:
-  backupName: backup-fedora02
+  backupName: backup-fedora01
   includedResources: [] 
   excludedResources:
   - nodes
