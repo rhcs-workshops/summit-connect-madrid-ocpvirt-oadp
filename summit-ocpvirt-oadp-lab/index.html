@@ -176,13 +176,29 @@
 <h2 id="backup"><a class="anchor" href="#backup"></a>Crear un backup de una máquina virtual</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Realizarás una copia de seguridad de la VM <code>fedora02</code>. La selección de los objetos de los que se realizará la copia de seguridad está definida por las etiquetas <code>app</code> y <code>vm.kubevirt.io/name</code>. Esto incluye la definición de VM, los discos y los objetos adicionales que utiliza la máquina virtual, como config maps y secretos.</p>
+<p>Realizarás una copia de seguridad de la VM <code>fedora01</code>. La selección de los objetos de los que se realizará la copia de seguridad está definida por las etiquetas <code>app</code> y <code>vm.kubevirt.io/name</code>. Esto incluye la definición de VM, los discos y los objetos adicionales que utiliza la máquina virtual, como config maps y secretos.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
 <p>Regrese a la página principal del Operador haciendo clic en el nombre del Operador</p>
 </li>
+</ol>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Debe estar seleccionado el proyecto "oadp-userX" según esté usando el usuario user1, user2 o user3.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
 <p>Ve a la pestaña de <strong>Backup</strong> y seleccione <strong>Create Backup</strong></p>
 <div class="imageblock">
@@ -198,28 +214,28 @@
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: velero.io/v1
 kind: Backup
 metadata:
-  name: backup-fedora02
+  name: backup-fedora01
   labels:
     velero.io/storage-location: default
-  namespace: openshift-adp
+  namespace: oadp-{user1|user2|user3}
 spec:
   hooks: {}
   orLabelSelectors:
   - matchLabels:
-      app: fedora02
+      app: fedora01
   - matchLabels:
-      vm.kubevirt.io/name: fedora02
+      vm.kubevirt.io/name: fedora01
   includedNamespaces:
-  - vmexamples
+  - vmexamples-{user1|user2|user3}
   storageLocation: oadp-dpa-1
   ttl: 720h0m0s</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Tenga en cuenta que el contenido de este YAML indica que se realizará una copia de seguridad de cualquier objeto con las etiquetas <code>app: fedora02</code> en el namespace <code>vmexamples</code> en la ubicación especificada en la configuración de <code>DataProtectionApplication</code>.</p>
+<p>Tenga en cuenta que el contenido de este YAML indica que se realizará una copia de seguridad de cualquier objeto con las etiquetas <code>app: fedora01</code> que estén creadas en el namespace <code>vmexamples-user1</code> o <code>vmexamples-user2</code> o <code>vmexamples-user3</code> <strong>(DEBE ESPECIFICAR  CUAL DE LOS 3 USUARIOS ESTÁ USANDO EN LA SESIÓN)</strong> en la ubicación especificada en la configuración de <code>DataProtectionApplication</code>.</p>
 </div>
 <div class="paragraph">
-<p>Si no tiene la máquina virtual <code>fedora02</code>, cambie los selectores de etiquetas en el YAML anterior para que coincidan con una máquina virtual en su entorno.</p>
+<p>Si no tiene la máquina virtual <code>fedora01</code>, cambie los selectores de etiquetas en el YAML anterior para que coincidan con una máquina virtual en su entorno.</p>
 </div>
 </li>
 <li>
@@ -240,11 +256,43 @@ spec:
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Navega a <strong>Virtualization</strong> &#8594; <strong>VirtualMachines</strong> y elimina la VM <code>fedora02</code>.</p>
+<p>Navega a <strong>Virtualization</strong> &#8594; <strong>VirtualMachines</strong> y elimina la VM <code>fedora01</code>.</p>
 </li>
+</ol>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Debe estar seleccionado el proyecto "vmexamples-userX" según esté usando el usuario user1, user2 o user3.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
 <p>Vuelve a la pestaña <strong>Operators</strong> &#8594; <strong>Installed Operators</strong> y selecciona <strong>OADP Operator</strong>.</p>
 </li>
+</ol>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Debe estar seleccionado el proyecto "oadp-userX" según esté usando el usuario user1, user2 o user3.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
 <p>Cambia a la pestaña de <strong>Restore</strong> y selecciona <strong>Create Restore</strong></p>
 <div class="imageblock">
@@ -260,10 +308,10 @@ spec:
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: velero.io/v1
 kind: Restore
 metadata:
-  name: restore-fedora02
+  name: restore-fedora01
   namespace: openshift-adp
 spec:
-  backupName: backup-fedora02
+  backupName: backup-fedora01
   includedResources: []
   excludedResources:
   - nodes
