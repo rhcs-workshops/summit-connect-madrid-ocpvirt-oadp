@@ -5,7 +5,7 @@
 [#operator]
 == Revisa el operador de OADP
 
-. Navega en el menú de la izquierda a *Operators* -> *Installed Operators* y revisa que `All projects` está seleccionado. Selecciona `OADP Operator`.
+. Navega en el menú de la izquierda a *Operators* -> *Installed Operators* y revisa que `odap-user1`, `odap-user2` o `odap-user3` esté seleccionado según corresponda tu usuario. Selecciona `OADP Operator`.
 +
 image::Backup/00_Left_Menu.png[]
 
