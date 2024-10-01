@@ -114,7 +114,7 @@ spec:
 +
 image::Backup/11_Restore_Completed.png[]
 
-. Vuelve a la pestaña de *Virtualization* -> *Virtual Machines* y comprueba que se ha restaurado la VM `fedora02`.
+. Vuelve a la pestaña de *Virtualization* -> *Virtual Machines* y comprueba que se ha restaurado la VM `fedora01`.
 +
 image::Backup/12_VM_Restored.png[]
 
