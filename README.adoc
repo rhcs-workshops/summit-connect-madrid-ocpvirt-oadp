@@ -1,1 +1,17 @@
-Check the build courseware https://redhat-scholars.github.io/build-course[documentation]  on how folder structure, how to use macros and other gotchas
+# Backup and Restore of Virtual Machines Lab
+
+    Check the build courseware https://redhat-scholars.github.io/build-course[documentation]  on how folder structure, how to use macros and other gotchas
+
+To run locally the _dev_ environment, install the following npm package and start the npm server:
+
+1. Install the _gulp-cli_ package:
+
+```bash
+npm install
+```
+
+2. Start the _dev_ environment:
+
+```bash
+gulp
+```
