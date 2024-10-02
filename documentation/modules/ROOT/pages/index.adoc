@@ -88,11 +88,10 @@ WARNING: Debe estar seleccionado el proyecto "oadp-userX", reemplazando "userX" 
 +
 image::Backup/09_Restore_Tab.png[]
 
-. Cambia a la vista de YAML y reemplaza el contenido por el siguiente:
+. Cambia a la vista de YAML y reemplaza el contenido por el siguiente:    
 
 WARNING: Recuerda reemplazar tu usuario en el apartado `namespace`.
 
-+
 [source,yaml]
 ----
 apiVersion: velero.io/v1
@@ -123,6 +122,7 @@ WARNING: Debe estar seleccionado el proyecto "vmexamples-userX", reemplazando "u
 +
 image::Backup/12_VM_Restored.png[]
 
+  
 [#cleanup]
 == Limpieza del entorno
 
