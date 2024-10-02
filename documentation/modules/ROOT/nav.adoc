@@ -1,6 +1,6 @@
 * xref:index.adoc[Tutorial]
 ** xref:index#intro[Introducción]
-** xref:index#vmcheck[Revisa el operador de OADP]
+** xref:index#vmcheck[Comprobación previa]
 ** xref:index#backup[Crea un backup]
 ** xref:index#restore[Restaura un backup]
 ** xref:index#cleanup[Limpieza del entorno]

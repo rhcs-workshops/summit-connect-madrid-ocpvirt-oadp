@@ -118,11 +118,11 @@ image::Backup/11_Restore_Completed.png[]
 . Vuelve a la pestaña de *Virtualization* -> *Virtual Machines* y comprueba que se ha restaurado la VM `fedora01`.
 
 WARNING: Debe estar seleccionado el proyecto "vmexamples-userX", reemplazando "userX" por el usuario que estés utilizando.
-
 +
 image::Backup/12_VM_Restored.png[]
 
-  
+
+
 [#cleanup]
 == Limpieza del entorno
 
