@@ -74,13 +74,19 @@
     <a class="nav-link" href="index.html">Tutorial</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#operator">Revisa el operador de OADP</a>
+    <a class="nav-link" href="#intro">Introducción</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#vmcheck">Revisa el operador de OADP</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#backup">Crea un backup</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#restore">Restaura un backup</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#cleanup">Limpieza del entorno</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#summary">Conclusiones</a>
@@ -126,21 +132,40 @@
 <article class="doc">
 <h1 class="page">Backup y Restore de máquinas virtuales</h1>
 <div class="sect1">
-<h2 id="operator"><a class="anchor" href="#operator"></a>Comprueba la existencia de la máquina virtual</h2>
+<h2 id="intro"><a class="anchor" href="#intro"></a>Introducción</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>OADP (OpenShift API for Data Protection) proporciona una solución de backup nativa tanto para aplicaciones como para máquinas virtuales que corren en OpenShift.
+OADP utiliza varios componentes, como Velero y Kopia, para hacer backup de todos los recursos de Kubernetes y volúmenes que estén asociados con las máquinas virtuales.
+En este caso, OADP ya se encuentra instalado mediante un operador en el entorno que vamos a utilizar.</p>
+</div>
+<div class="paragraph">
+<p>El objetivo del presente lab es realizar un backup de una máquina virtual que está corriendo en OpenShift Virtualization.
+Tras realizar el backup, borraremos la máquina y la recuperaremos gracias al backup realizado previamente.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="vmcheck"><a class="anchor" href="#vmcheck"></a>Comprobación previa</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Antes de empezar con el backup, debemos comprobar que existe una máquina virtual en nuestro namespace (o proyecto). El nombre de dicho namespace es "oadp-userX" sustituyendo userX por el usuario que estemos utilizando.
+. Navega a <strong>Virtualization</strong> &#8594; <strong>VirtualMachines</strong> y comprueba que existe una VM con el nombre <code>fedora01</code>. Comprueba que el namespace es el correcto.
+. Si no encuentras la máquina, por favor ponte en contacto con alguno de los redhatters que está asistiendo el lab.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="backup"><a class="anchor" href="#backup"></a>Crear un backup de una máquina virtual</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Realizarás una copia de seguridad de la VM <code>fedora01</code>. La selección de los objetos de los que se realizará la copia de seguridad está definida por las etiquetas <code>app</code> y <code>vm.kubevirt.io/name</code>. Esto incluye la definición de VM, los discos y los objetos adicionales que utiliza la máquina virtual, como config maps y secretos.</p>
+<p>Para efectuar una copia de seguridad de nuestra máquina virtual debemos crear un objeto <code>Backup</code> que define los namespaces y los recursos que haya que incluir en el backup.
+La selección de los objetos de los que se realizará la copia de seguridad está definida por las etiquetas <code>app</code> y <code>vm.kubevirt.io/name</code>. Esto incluye la definición de VM, los discos y los objetos adicionales que utiliza la máquina virtual, como config maps y secrets.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Regrese a la página principal del Operador haciendo clic en el nombre del Operador</p>
+<p>Ve a la página principal del Operador haciendo clic en <strong>Operators</strong> &#8594; <strong>Installed Operators</strong> y seleccionando <strong>OADP Operator</strong>.</p>
 </li>
 </ol>
 </div>
@@ -151,7 +176,7 @@
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Debe estar seleccionado el proyecto "oadp-userX" según esté usando el usuario user1, user2 o user3.
+Debe estar seleccionado el proyecto "oadp-userX" según estés usando el usuario user1, user2 o user3.
 </td>
 </tr>
 </table>
@@ -159,7 +184,7 @@ Debe estar seleccionado el proyecto "oadp-userX" según esté usando el usuario 
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Ve a la pestaña de <strong>Backup</strong> y seleccione <strong>Create Backup</strong></p>
+<p>Ve a la pestaña de <strong>Backup</strong> y selecciona <strong>Create Backup</strong></p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/Backup/04_Backup_Tab.png" alt="04 Backup Tab">
@@ -167,7 +192,7 @@ Debe estar seleccionado el proyecto "oadp-userX" según esté usando el usuario 
 </div>
 </li>
 <li>
-<p>Cambia de vista a <em>YAML view</em> y reemplaza el siguiente contenido:</p>
+<p>Cambia de vista a <em>YAML view</em> y reemplaza lo que haya por el siguiente contenido:</p>
 </li>
 </ol>
 </div>
@@ -178,7 +203,7 @@ Debe estar seleccionado el proyecto "oadp-userX" según esté usando el usuario 
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Tenga en cuenta que el contenido de este YAML indica que se realizará una copia de seguridad de cualquier objeto con las etiquetas <code>app: fedora01</code> que estén creadas en el namespace <code>vmexamples-user1</code> o <code>vmexamples-user2</code> o <code>vmexamples-user3</code> <strong>(DEBE ESPECIFICAR  CUAL DE LOS 3 USUARIOS ESTÁ USANDO EN LA SESIÓN)</strong> en la ubicación especificada en la configuración de <code>DataProtectionApplication</code>.
+El contenido de este YAML indica que se realizará una copia de seguridad de cualquier objeto con las etiquetas <code>app: fedora01</code> que estén creadas en el namespace <code>vmexamples-user1</code> o <code>vmexamples-user2</code> o <code>vmexamples-user3</code> <strong>(DEBES ESPECIFICAR CUÁL DE LOS 3 USUARIOS ESTÁS USANDO EN LA SESIÓN)</strong> en la ubicación especificada en la configuración de <code>DataProtectionApplication</code>.
 </td>
 </tr>
 </table>
@@ -206,12 +231,12 @@ spec:
 </div>
 </div>
 <div class="paragraph">
-<p>Si no tiene la máquina virtual <code>fedora01</code>, cambie los selectores de etiquetas en el YAML anterior para que coincidan con una máquina virtual en su entorno.</p>
+<p>Si no tenías la máquina virtual <code>fedora01</code>, y te han creado otra con otro nombre, cambia los selectores de etiquetas en el YAML anterior para que coincidan con la máquina virtual que tengas en tu namespace.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Espere hasta que la columna <code>Status</code> cambie a <code>Completed</code>. Esto indica que se ha realizado una copia de seguridad exitosa de la máquina virtual.</p>
+<p>Espera hasta que la columna <code>Status</code> cambie a <code>Completed</code>. Esto indica que se ha realizado una copia de seguridad de la máquina virtual con éxito.</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/Backup/06_Backup_Completed.png" alt="06 Backup Completed">
@@ -225,10 +250,13 @@ spec:
 <div class="sect1">
 <h2 id="restore"><a class="anchor" href="#restore"></a>Restaura un backup</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>A continuación vamos a borrar la máquina virtual original y la vamos a recuperar gracias al backup que acabamos de crear.</p>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Navega a <strong>Virtualization</strong> &#8594; <strong>VirtualMachines</strong> y elimina la VM <code>fedora01</code>.</p>
+<p>Ve a <strong>Virtualization</strong> &#8594; <strong>VirtualMachines</strong> y elimina la VM <code>fedora01</code>.</p>
 </li>
 </ol>
 </div>
@@ -239,7 +267,7 @@ spec:
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Debe estar seleccionado el proyecto "vmexamples-userX" según esté usando el usuario user1, user2 o user3.
+Debe estar seleccionado el proyecto "vmexamples-userX", reemplazando "userX" por el usuario que estés utilizando.
 </td>
 </tr>
 </table>
@@ -258,7 +286,7 @@ Debe estar seleccionado el proyecto "vmexamples-userX" según esté usando el us
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Debe estar seleccionado el proyecto "oadp-userX" según esté usando el usuario user1, user2 o user3.
+Debe estar seleccionado el proyecto "oadp-userX", reemplazando "userX" por el usuario que estés utilizando.
 </td>
 </tr>
 </table>
@@ -274,7 +302,25 @@ Debe estar seleccionado el proyecto "oadp-userX" según esté usando el usuario 
 </div>
 </li>
 <li>
-<p>Cambia a la vista de YAML y reemplaza el contenido con el siguiente:</p>
+<p>Cambia a la vista de YAML y reemplaza el contenido por el siguiente:</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Recuerda reemplazar tu usuario en el apartado <code>namespace</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: velero.io/v1
@@ -294,7 +340,8 @@ spec:
   restorePVs: true</code></pre>
 </div>
 </div>
-</li>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
 <p>Espera hasta que la columna de <code>Status</code> cambie a <code>Completed</code>.</p>
 <div class="imageblock">
@@ -315,7 +362,7 @@ spec:
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Debe estar seleccionado el proyecto "vmexamples-userX" según esté usando el usuario user1, user2 o user3.
+Debe estar seleccionado el proyecto "vmexamples-userX", reemplazando "userX" por el usuario que estés utilizando.
 </td>
 </tr>
 </table>
@@ -327,10 +374,32 @@ image::Backup/12_VM_Restored.png[]</p>
 </div>
 </div>
 <div class="sect1">
+<h2 id="cleanup"><a class="anchor" href="#cleanup"></a>Limpieza del entorno</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A continuación borraremos los recursos que hemos utilizado para que la siguiente persona pueda efectuar el lab.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Vuelve a la pestaña <strong>Operators</strong> &#8594; <strong>Installed Operators</strong> y selecciona <strong>OADP Operator</strong>.</p>
+</li>
+<li>
+<p>Cambia a la pestaña de <strong>Backup</strong> y borra el backup que hemos creado.</p>
+</li>
+<li>
+<p>Ahora cambia a la pestaña de <strong>Restore</strong> y borra el restore que hemos creado.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="summary"><a class="anchor" href="#summary"></a>Conclusiones</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>La protección de las máquinas virtuales es un aspecto crítico de una plataforma de virtualización. OpenShift Virtualization proporciona múltiples métodos que permiten la protección nativa, por ejemplo, utilizando OADP o permitiendo la integración con otras soluciones de terceros. Si tiene cualquier duda sobre cómo proteger las máquinas virtuales, no dude en consultar a los supervisores del taller o comunicarse con su proveedor para determinar su compatibilidad con OpenShift Virtualization.</p>
+<p>La protección de las máquinas virtuales es un aspecto crítico de una plataforma de virtualización. OpenShift Virtualization proporciona múltiples métodos que permiten la protección nativa, por ejemplo, utilizando OADP o permitiendo la integración con otras soluciones de terceros. Si tienes cualquier duda acerca de cómo proteger las máquinas virtuales, no dudes en consultar a cualquiera de los redhatters en el área de conversación.
+¡Muchas gracias por tu interés en OpenShift Virtualization!</p>
 </div>
 </div>
 </div>
