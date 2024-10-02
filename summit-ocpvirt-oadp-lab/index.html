@@ -126,50 +126,9 @@
 <article class="doc">
 <h1 class="page">Backup y Restore de máquinas virtuales</h1>
 <div class="sect1">
-<h2 id="operator"><a class="anchor" href="#operator"></a>Revisa el operador de OADP</h2>
+<h2 id="operator"><a class="anchor" href="#operator"></a>Comprueba la existencia de la máquina virtual</h2>
 <div class="sectionbody">
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Navega en el menú de la izquierda a <strong>Operators</strong> &#8594; <strong>Installed Operators</strong> y revisa que <code>All projects</code> está seleccionado. Selecciona <code>OADP Operator</code>.</p>
-<div class="imageblock">
-<div class="content">
-<img src="_images/Backup/00_Left_Menu.png" alt="00 Left Menu">
-</div>
-</div>
-</li>
-<li>
-<p>Revisa las <strong>Provided APIs</strong> disponibles. En este módulo usaremos las funciones de <code>Backup</code> y <code>Restore</code>.</p>
-<div class="imageblock">
-<div class="content">
-<img src="_images/Backup/01_Overview.png" alt="01 Overview">
-</div>
-</div>
-</li>
-<li>
-<p>Navega a la pestaña llamada <strong>DataProtectionApplication</strong>. Este objeto representa la configuración de la instancia de OADP desplegada en este cluster.</p>
-<div class="imageblock">
-<div class="content">
-<img src="_images/Backup/02_DPA.png" alt="02 DPA">
-</div>
-</div>
-</li>
-<li>
-<p>Selecciona <code>oadp-dpa</code> y revisa la definición <em>YAML</em>.</p>
-<div class="imageblock">
-<div class="content">
-<img src="_images/Backup/03_OADP_YAML.png" alt="03 OADP YAML">
-</div>
-</div>
-<div class="paragraph">
-<p>Tenga en cuenta que la instancia de <strong>OADP</strong> ha sido configurada añadiendo el plugin de <code>kubevirt</code> y que ha sido configurada para usar el bucket de <strong>Red Hat Storage</strong>.</p>
-</div>
-<div class="paragraph">
-<p>En un entorno de producción normalmente usarías un sistema de almacenamiento externo, sin embargo, en este lab, estamos utilizando el almacenamiento interno de objetos por conveniencia.</p>
-</div>
-</li>
-</ol>
-</div>
+
 </div>
 </div>
 <div class="sect1">
@@ -209,6 +168,21 @@ Debe estar seleccionado el proyecto "oadp-userX" según esté usando el usuario 
 </li>
 <li>
 <p>Cambia de vista a <em>YAML view</em> y reemplaza el siguiente contenido:</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Tenga en cuenta que el contenido de este YAML indica que se realizará una copia de seguridad de cualquier objeto con las etiquetas <code>app: fedora01</code> que estén creadas en el namespace <code>vmexamples-user1</code> o <code>vmexamples-user2</code> o <code>vmexamples-user3</code> <strong>(DEBE ESPECIFICAR  CUAL DE LOS 3 USUARIOS ESTÁ USANDO EN LA SESIÓN)</strong> en la ubicación especificada en la configuración de <code>DataProtectionApplication</code>.
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: velero.io/v1
@@ -217,7 +191,7 @@ metadata:
   name: backup-fedora01
   labels:
     velero.io/storage-location: default
-  namespace: oadp-{user1|user2|user3}
+  namespace: oadp-{user1|user2|user3} &lt;- INDICA SOLO TU USER
 spec:
   hooks: {}
   orLabelSelectors:
@@ -226,18 +200,16 @@ spec:
   - matchLabels:
       vm.kubevirt.io/name: fedora01
   includedNamespaces:
-  - vmexamples-{user1|user2|user3}
+  - vmexamples-{user1|user2|user3} &lt;- INDICA SOLO TU USER
   storageLocation: oadp-dpa-1
   ttl: 720h0m0s</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Tenga en cuenta que el contenido de este YAML indica que se realizará una copia de seguridad de cualquier objeto con las etiquetas <code>app: fedora01</code> que estén creadas en el namespace <code>vmexamples-user1</code> o <code>vmexamples-user2</code> o <code>vmexamples-user3</code> <strong>(DEBE ESPECIFICAR  CUAL DE LOS 3 USUARIOS ESTÁ USANDO EN LA SESIÓN)</strong> en la ubicación especificada en la configuración de <code>DataProtectionApplication</code>.</p>
-</div>
-<div class="paragraph">
 <p>Si no tiene la máquina virtual <code>fedora01</code>, cambie los selectores de etiquetas en el YAML anterior para que coincidan con una máquina virtual en su entorno.</p>
 </div>
-</li>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
 <p>Espere hasta que la columna <code>Status</code> cambie a <code>Completed</code>. Esto indica que se ha realizado una copia de seguridad exitosa de la máquina virtual.</p>
 <div class="imageblock">
@@ -309,7 +281,7 @@ Debe estar seleccionado el proyecto "oadp-userX" según esté usando el usuario 
 kind: Restore
 metadata:
   name: restore-fedora01
-  namespace: openshift-adp
+  namespace: oadp-{user1|user2|user3} &lt;- INDICA SOLO TU USER
 spec:
   backupName: backup-fedora01
   includedResources: []
@@ -333,13 +305,24 @@ spec:
 </li>
 <li>
 <p>Vuelve a la pestaña de <strong>Virtualization</strong> &#8594; <strong>Virtual Machines</strong> y comprueba que se ha restaurado la VM <code>fedora01</code>.</p>
-<div class="imageblock">
-<div class="content">
-<img src="_images/Backup/12_VM_Restored.png" alt="12 VM Restored">
-</div>
-</div>
 </li>
 </ol>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Debe estar seleccionado el proyecto "vmexamples-userX" según esté usando el usuario user1, user2 o user3.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>+
+image::Backup/12_VM_Restored.png[]</p>
 </div>
 </div>
 </div>
