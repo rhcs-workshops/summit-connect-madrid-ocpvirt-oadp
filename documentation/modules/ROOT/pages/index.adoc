@@ -10,16 +10,13 @@ OADP utiliza varios componentes, como Velero y Kopia, para hacer backup de todos
 En este caso, OADP ya se encuentra instalado mediante un operador en el entorno que vamos a utilizar.
 
 El objetivo del presente lab es realizar un backup de una máquina virtual que está corriendo en OpenShift Virtualization.
-Tras realizar el backup, borraremos la máquina y la recuperaremos gracias al backup realizado previamente.      
-
+Tras realizar el backup, borraremos la máquina y la recuperaremos gracias al backup realizado previamente.
 
 [#vmcheck]
 == Comprobación previa
 
-Antes de empezar con el backup, debemos comprobar que existe una máquina virtual en nuestro namespace (o proyecto). El nombre de dicho namespace es "oadp-userX" sustituyendo userX por el usuario que estemos utilizando.
-. Navega a *Virtualization* -> *VirtualMachines* y comprueba que existe una VM con el nombre `fedora01`. Comprueba que el namespace es el correcto.
+Antes de empezar con el backup, debemos comprobar que existe una máquina virtual en nuestro namespace (o proyecto). El nombre de dicho namespace es `oadp-userX` sustituyendo `userX` por el usuario que estemos utilizando. Navega a *Virtualization* -> *VirtualMachines* y comprueba que existe una VM con el nombre `fedora01`. Comprueba que el namespace es el correcto.
 . Si no encuentras la máquina, por favor ponte en contacto con alguno de los redhatters que está asistiendo el lab.
-
 
 [#backup]
 == Crear un backup de una máquina virtual
@@ -29,7 +26,7 @@ La selección de los objetos de los que se realizará la copia de seguridad est�
 
 . Ve a la página principal del Operador haciendo clic en *Operators* -> *Installed Operators* y seleccionando *OADP Operator*.
 
-WARNING: Debe estar seleccionado el proyecto "oadp-userX" según estés usando el usuario user1, user2 o user3.
+WARNING: Debe estar seleccionado el proyecto `oadp-userX` según estés usando el usuario `user1`, `user2` o `user3`.
 
 . Ve a la pestaña de *Backup* y selecciona *Create Backup*
 +
@@ -38,7 +35,6 @@ image::Backup/04_Backup_Tab.png[]
 . Cambia de vista a _YAML view_ y reemplaza lo que haya por el siguiente contenido:
 
 WARNING: El contenido de este YAML indica que se realizará una copia de seguridad de cualquier objeto con las etiquetas `app: fedora01` que estén creadas en el namespace `vmexamples-user1` o `vmexamples-user2` o `vmexamples-user3` *(DEBES ESPECIFICAR CUÁL DE LOS 3 USUARIOS ESTÁS USANDO EN LA SESIÓN)* en la ubicación especificada en la configuración de `DataProtectionApplication`.
-
 
 [source,yaml]
 ----
@@ -62,9 +58,7 @@ spec:
   ttl: 720h0m0s
 ----
 
-[IMPORTANTE]
-Si no tenías la máquina virtual `fedora01`, y te han creado otra con otro nombre, cambia los selectores de etiquetas en el YAML anterior para que coincidan con la máquina virtual que tengas en tu namespace.
-
+WARNING: Si no tenías la máquina virtual `fedora01`, y te han creado otra con otro nombre, cambia los selectores de etiquetas en el YAML anterior para que coincidan con la máquina virtual que tengas en tu namespace.
 
 . Espera hasta que la columna `Status` cambie a `Completed`. Esto indica que se ha realizado una copia de seguridad de la máquina virtual con éxito.
 
@@ -78,17 +72,17 @@ A continuación vamos a borrar la máquina virtual original y la vamos a recuper
 
 . Ve a *Virtualization* -> *VirtualMachines* y elimina la VM `fedora01`.
 
-WARNING: Debe estar seleccionado el proyecto "vmexamples-userX", reemplazando "userX" por el usuario que estés utilizando.
+WARNING: Debe estar seleccionado el proyecto `vmexamples-userX`, reemplazando `userX` por el usuario que estés utilizando.
 
-. Vuelve a la pestaña *Operators* -> *Installed Operators* y selecciona *OADP Operator*. 
+. Vuelve a la pestaña *Operators* -> *Installed Operators* y selecciona *OADP Operator*.
 
-WARNING: Debe estar seleccionado el proyecto "oadp-userX", reemplazando "userX" por el usuario que estés utilizando.
+WARNING: Debe estar seleccionado el proyecto `oadp-userX`, reemplazando `userX` por el usuario que estés utilizando.
 
 . Cambia a la pestaña de *Restore* y selecciona *Create Restore*
 +
 image::Backup/09_Restore_Tab.png[]
 
-. Cambia a la vista de YAML y reemplaza el contenido por el siguiente:    
+. Cambia a la vista de YAML y reemplaza el contenido por el siguiente:
 
 WARNING: Recuerda reemplazar tu usuario en el apartado `namespace`.
 
@@ -101,7 +95,7 @@ metadata:
   namespace: oadp-{user1|user2|user3} <- INDICA SOLO TU USER
 spec:
   backupName: backup-fedora01
-  includedResources: [] 
+  includedResources: []
   excludedResources:
   - nodes
   - events
@@ -116,25 +110,22 @@ spec:
 image::Backup/11_Restore_Completed.png[]
 
 . Vuelve a la pestaña de *Virtualization* -> *Virtual Machines* y comprueba que se ha restaurado la VM `fedora01`.
-
-WARNING: Debe estar seleccionado el proyecto "vmexamples-userX", reemplazando "userX" por el usuario que estés utilizando.
-
 +
 image::Backup/12_VM_Restored.png[]
 
+WARNING: Debe estar seleccionado el proyecto `vmexamples-userX`, reemplazando `userX` por el usuario que estés utilizando.
 
 [#cleanup]
 == Limpieza del entorno
 
 A continuación borraremos los recursos que hemos utilizado para que la siguiente persona pueda efectuar el lab.
 
-. Vuelve a la pestaña *Operators* -> *Installed Operators* y selecciona *OADP Operator*. 
+. Vuelve a la pestaña *Operators* -> *Installed Operators* y selecciona *OADP Operator*.
 . Cambia a la pestaña de *Backup* y borra el backup que hemos creado.
 . Ahora cambia a la pestaña de *Restore* y borra el restore que hemos creado.
 
-
 [#summary]
-== Conclusiones 
+== Conclusiones
 
 La protección de las máquinas virtuales es un aspecto crítico de una plataforma de virtualización. OpenShift Virtualization proporciona múltiples métodos que permiten la protección nativa, por ejemplo, utilizando OADP o permitiendo la integración con otras soluciones de terceros. Si tienes cualquier duda acerca de cómo proteger las máquinas virtuales, no dudes en consultar a cualquiera de los redhatters en el área de conversación.
 ¡Muchas gracias por tu interés en OpenShift Virtualization!
