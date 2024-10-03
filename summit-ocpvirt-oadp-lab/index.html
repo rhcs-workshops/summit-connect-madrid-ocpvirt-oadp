@@ -65,7 +65,7 @@
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
   <nav class="nav-menu">
-    <h3 class="title"><a href="index.html" class=" query-params-link">Backup y Restore de máquinas virtuales</a></h3>
+    <h3 class="title"><a href="index.html" class=" query-params-link">Summit Connect Madrid - Backup y Restore de Máquinas Virtuales</a></h3>
 <ul class="nav-list">
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
@@ -100,12 +100,12 @@
 </div>
 <div class="nav-panel-explore" data-panel="explore">
   <div class="context">
-    <span class="title">Backup y Restore de máquinas virtuales</span>
+    <span class="title">Summit Connect Madrid - Backup y Restore de Máquinas Virtuales</span>
     <span class="version">master</span>
   </div>
   <ul class="components">
     <li class="component is-current">
-      <span class="title">Backup y Restore de máquinas virtuales</span>
+      <span class="title">Summit Connect Madrid - Backup y Restore de Máquinas Virtuales</span>
       <ul class="versions">
         <li class="version is-current">
           <a href="index.html">master</a>
@@ -122,7 +122,7 @@
 <button class="nav-toggle"></button>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
-    <li><a href="index.html">Backup y Restore de máquinas virtuales</a></li>
+    <li><a href="index.html">Summit Connect Madrid - Backup y Restore de Máquinas Virtuales</a></li>
     <li><a href="index.html">Tutorial</a></li>
   </ul>
 </nav>
@@ -149,8 +149,7 @@ Tras realizar el backup, borraremos la máquina y la recuperaremos gracias al ba
 <h2 id="vmcheck"><a class="anchor" href="#vmcheck"></a>Comprobación previa</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Antes de empezar con el backup, debemos comprobar que existe una máquina virtual en nuestro namespace (o proyecto). El nombre de dicho namespace es "oadp-userX" sustituyendo userX por el usuario que estemos utilizando.
-. Navega a <strong>Virtualization</strong> &#8594; <strong>VirtualMachines</strong> y comprueba que existe una VM con el nombre <code>fedora01</code>. Comprueba que el namespace es el correcto.
+<p>Antes de empezar con el backup, debemos comprobar que existe una máquina virtual en nuestro namespace (o proyecto). El nombre de dicho namespace es <code>oadp-userX</code> sustituyendo <code>userX</code> por el usuario que estemos utilizando. Navega a <strong>Virtualization</strong> &#8594; <strong>VirtualMachines</strong> y comprueba que existe una VM con el nombre <code>fedora01</code>. Comprueba que el namespace es el correcto.
 . Si no encuentras la máquina, por favor ponte en contacto con alguno de los redhatters que está asistiendo el lab.</p>
 </div>
 </div>
@@ -176,7 +175,7 @@ La selección de los objetos de los que se realizará la copia de seguridad est�
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Debe estar seleccionado el proyecto "oadp-userX" según estés usando el usuario user1, user2 o user3.
+Debe estar seleccionado el proyecto <code>oadp-userX</code> según estés usando el usuario <code>user1</code>, <code>user2</code> o <code>user3</code>.
 </td>
 </tr>
 </table>
@@ -230,8 +229,17 @@ spec:
   ttl: 720h0m0s</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Si no tenías la máquina virtual <code>fedora01</code>, y te han creado otra con otro nombre, cambia los selectores de etiquetas en el YAML anterior para que coincidan con la máquina virtual que tengas en tu namespace.</p>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Si no tenías la máquina virtual <code>fedora01</code>, y te han creado otra con otro nombre, cambia los selectores de etiquetas en el YAML anterior para que coincidan con la máquina virtual que tengas en tu namespace.
+</td>
+</tr>
+</table>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -267,7 +275,7 @@ spec:
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Debe estar seleccionado el proyecto "vmexamples-userX", reemplazando "userX" por el usuario que estés utilizando.
+Debe estar seleccionado el proyecto <code>vmexamples-userX</code>, reemplazando <code>userX</code> por el usuario que estés utilizando.
 </td>
 </tr>
 </table>
@@ -286,7 +294,7 @@ Debe estar seleccionado el proyecto "vmexamples-userX", reemplazando "userX" por
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Debe estar seleccionado el proyecto "oadp-userX", reemplazando "userX" por el usuario que estés utilizando.
+Debe estar seleccionado el proyecto <code>oadp-userX</code>, reemplazando <code>userX</code> por el usuario que estés utilizando.
 </td>
 </tr>
 </table>
@@ -349,6 +357,11 @@ spec:
 </li>
 <li>
 <p>Vuelve a la pestaña de <strong>Virtualization</strong> &#8594; <strong>Virtual Machines</strong> y comprueba que se ha restaurado la VM <code>fedora01</code>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/Backup/12_VM_Restored.png" alt="12 VM Restored">
+</div>
+</div>
 </li>
 </ol>
 </div>
@@ -359,14 +372,10 @@ spec:
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Debe estar seleccionado el proyecto "vmexamples-userX", reemplazando "userX" por el usuario que estés utilizando.
+Debe estar seleccionado el proyecto <code>vmexamples-userX</code>, reemplazando <code>userX</code> por el usuario que estés utilizando.
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>+
-image::Backup/12_VM_Restored.png[]</p>
 </div>
 </div>
 </div>
