@@ -3,9 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Welcome to Template Tutorial :: Summit-Connect-Madrid-OCPVirt-OADP</title>
+    <title>Backup y Restore de máquinas virtuales :: Summit-Connect-Madrid-OCPVirt-OADP</title>
     <link rel="canonical" href="https://github.com/rhcs-workshops/summit-connect-madrid-ocpvirt-oadp/template-tutorial/index.html">
-    <link rel="next" href="01-setup.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../_/css/site.css">
 <link rel="icon" href="../_/img/favicon.ico" type="image/x-icon">
@@ -66,31 +65,31 @@
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
   <nav class="nav-menu">
-    <h3 class="title"><a href="index.html" class=" query-params-link">Template Tutorial</a></h3>
+    <h3 class="title"><a href="index.html" class=" query-params-link">Backup y Restore de máquinas virtuales</a></h3>
 <ul class="nav-list">
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="01-setup.html">1. Setup</a>
+    <a class="nav-link" href="index.html">Tutorial</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="01-setup.html#prerequisite">Prerequisites</a>
+    <a class="nav-link" href="#intro">Introducción</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="01-setup.html#minikube">Setup Minikube</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="02-deploy.html">2. Deploy Service</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="02-deploy.html#package">Build Service</a>
+    <a class="nav-link" href="#vmcheck">Comprobación previa</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="02-deploy.html#deploy">Deploy Dervice</a>
+    <a class="nav-link" href="#backup">Crea un backup</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#restore">Restaura un backup</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#cleanup">Limpieza del entorno</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#summary">Conclusiones</a>
   </li>
 </ul>
   </li>
@@ -101,12 +100,12 @@
 </div>
 <div class="nav-panel-explore" data-panel="explore">
   <div class="context">
-    <span class="title">Template Tutorial</span>
+    <span class="title">Backup y Restore de máquinas virtuales</span>
     <span class="version">master</span>
   </div>
   <ul class="components">
     <li class="component is-current">
-      <span class="title">Template Tutorial</span>
+      <span class="title">Backup y Restore de máquinas virtuales</span>
       <ul class="versions">
         <li class="version is-current">
           <a href="index.html">master</a>
@@ -123,50 +122,293 @@
 <button class="nav-toggle"></button>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
-    <li><a href="index.html">Template Tutorial</a></li>
-    <li><a href="index.html">Welcome to Template Tutorial</a></li>
+    <li><a href="index.html">Backup y Restore de máquinas virtuales</a></li>
+    <li><a href="index.html">Tutorial</a></li>
   </ul>
 </nav>
   <div class="edit-this-page"><a href="https://github.com/rhcs-workshops/summit-connect-madrid-ocpvirt-oadp/edit/master/documentation/modules/ROOT/pages/index.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Welcome to Template Tutorial</h1>
-<div class="sect1 text-center strong">
-<h2>Publish Services to Kubernetes</h2>
+<h1 class="page">Backup y Restore de máquinas virtuales</h1>
+<div class="sect1">
+<h2 id="intro"><a class="anchor" href="#intro"></a>Introducción</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>A Kubernetes tutorial to show how you can deploy a Java service to a Kubernetes cluster as it was a child game.</p>
+<p>OADP (OpenShift API for Data Protection) proporciona una solución de backup nativa tanto para aplicaciones como para máquinas virtuales que corren en OpenShift.
+OADP utiliza varios componentes, como Velero y Kopia, para hacer backup de todos los recursos de Kubernetes y volúmenes que estén asociados con las máquinas virtuales.
+En este caso, OADP ya se encuentra instalado mediante un operador en el entorno que vamos a utilizar.</p>
+</div>
+<div class="paragraph">
+<p>El objetivo del presente lab es realizar un backup de una máquina virtual que está corriendo en OpenShift Virtualization.
+Tras realizar el backup, borraremos la máquina y la recuperaremos gracias al backup realizado previamente.</p>
 </div>
 </div>
 </div>
-<div class="sect1 tiles browse">
-<h2>Browse modules</h2>
+<div class="sect1">
+<h2 id="vmcheck"><a class="anchor" href="#vmcheck"></a>Comprobación previa</h2>
 <div class="sectionbody">
-<div class="ulist tile">
-<div class="title"><a href="01-setup.html" class="xref page">Get Started</a></div>
-<ul>
+<div class="paragraph">
+<p>Antes de empezar con el backup, debemos comprobar que existe una máquina virtual en nuestro namespace (o proyecto). El nombre de dicho namespace es <code>oadp-userX</code> sustituyendo <code>userX</code> por el usuario que estemos utilizando. Navega a <strong>Virtualization</strong> &#8594; <strong>VirtualMachines</strong> y comprueba que existe una VM con el nombre <code>fedora01</code>. Comprueba que el namespace es el correcto.
+. Si no encuentras la máquina, por favor ponte en contacto con alguno de los redhatters que está asistiendo el lab.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="backup"><a class="anchor" href="#backup"></a>Crear un backup de una máquina virtual</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Para efectuar una copia de seguridad de nuestra máquina virtual debemos crear un objeto <code>Backup</code> que define los namespaces y los recursos que haya que incluir en el backup.
+La selección de los objetos de los que se realizará la copia de seguridad está definida por las etiquetas <code>app</code> y <code>vm.kubevirt.io/name</code>. Esto incluye la definición de VM, los discos y los objetos adicionales que utiliza la máquina virtual, como config maps y secrets.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p><a href="01-setup.html#minikube" class="xref page">Minikube</a></p>
+<p>Ve a la página principal del Operador haciendo clic en <strong>Operators</strong> &#8594; <strong>Installed Operators</strong> y seleccionando <strong>OADP Operator</strong>.</p>
 </li>
-</ul>
+</ol>
 </div>
-<div class="ulist tile">
-<div class="title"><a href="02-deploy.html" class="xref page">Deploying</a></div>
-<ul>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Debe estar seleccionado el proyecto <code>oadp-userX</code> según estés usando el usuario <code>user1</code>, <code>user2</code> o <code>user3</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p><a href="02-deploy.html#package" class="xref page">Package the Application</a></p>
+<p>Ve a la pestaña de <strong>Backup</strong> y selecciona <strong>Create Backup</strong></p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/Backup/04_Backup_Tab.png" alt="04 Backup Tab">
+</div>
+</div>
 </li>
 <li>
-<p><a href="02-deploy.html#deploy" class="xref page">Deploy the Application</a></p>
+<p>Cambia de vista a <em>YAML view</em> y reemplaza lo que haya por el siguiente contenido:</p>
 </li>
-</ul>
+</ol>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+El contenido de este YAML indica que se realizará una copia de seguridad de cualquier objeto con las etiquetas <code>app: fedora01</code> que estén creadas en el namespace <code>vmexamples-user1</code> o <code>vmexamples-user2</code> o <code>vmexamples-user3</code> <strong>(DEBES ESPECIFICAR CUÁL DE LOS 3 USUARIOS ESTÁS USANDO EN LA SESIÓN)</strong> en la ubicación especificada en la configuración de <code>DataProtectionApplication</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: velero.io/v1
+kind: Backup
+metadata:
+  name: backup-fedora01
+  labels:
+    velero.io/storage-location: default
+  namespace: oadp-{user1|user2|user3} &lt;- INDICA SOLO TU USER
+spec:
+  hooks: {}
+  orLabelSelectors:
+  - matchLabels:
+      app: fedora01
+  - matchLabels:
+      vm.kubevirt.io/name: fedora01
+  includedNamespaces:
+  - vmexamples-{user1|user2|user3} &lt;- INDICA SOLO TU USER
+  storageLocation: oadp-dpa-1
+  ttl: 720h0m0s</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Si no tenías la máquina virtual <code>fedora01</code>, y te han creado otra con otro nombre, cambia los selectores de etiquetas en el YAML anterior para que coincidan con la máquina virtual que tengas en tu namespace.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Espera hasta que la columna <code>Status</code> cambie a <code>Completed</code>. Esto indica que se ha realizado una copia de seguridad de la máquina virtual con éxito.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/Backup/06_Backup_Completed.png" alt="06 Backup Completed">
+</div>
+</div>
+</li>
+</ol>
 </div>
 </div>
 </div>
-<nav class="pagination">
-  <span class="next"><a href="01-setup.html" class="query-params-link">1. Setup</a></span>
-</nav>
+<div class="sect1">
+<h2 id="restore"><a class="anchor" href="#restore"></a>Restaura un backup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A continuación vamos a borrar la máquina virtual original y la vamos a recuperar gracias al backup que acabamos de crear.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ve a <strong>Virtualization</strong> &#8594; <strong>VirtualMachines</strong> y elimina la VM <code>fedora01</code>.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Debe estar seleccionado el proyecto <code>vmexamples-userX</code>, reemplazando <code>userX</code> por el usuario que estés utilizando.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Vuelve a la pestaña <strong>Operators</strong> &#8594; <strong>Installed Operators</strong> y selecciona <strong>OADP Operator</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Debe estar seleccionado el proyecto <code>oadp-userX</code>, reemplazando <code>userX</code> por el usuario que estés utilizando.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Cambia a la pestaña de <strong>Restore</strong> y selecciona <strong>Create Restore</strong></p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/Backup/09_Restore_Tab.png" alt="09 Restore Tab">
+</div>
+</div>
+</li>
+<li>
+<p>Cambia a la vista de YAML y reemplaza el contenido por el siguiente:</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Recuerda reemplazar tu usuario en el apartado <code>namespace</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: velero.io/v1
+kind: Restore
+metadata:
+  name: restore-fedora01
+  namespace: oadp-{user1|user2|user3} &lt;- INDICA SOLO TU USER
+spec:
+  backupName: backup-fedora01
+  includedResources: []
+  excludedResources:
+  - nodes
+  - events
+  - events.events.k8s.io
+  - backups.velero.io
+  - restores.velero.io
+  restorePVs: true</code></pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Espera hasta que la columna de <code>Status</code> cambie a <code>Completed</code>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/Backup/11_Restore_Completed.png" alt="11 Restore Completed">
+</div>
+</div>
+</li>
+<li>
+<p>Vuelve a la pestaña de <strong>Virtualization</strong> &#8594; <strong>Virtual Machines</strong> y comprueba que se ha restaurado la VM <code>fedora01</code>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/Backup/12_VM_Restored.png" alt="12 VM Restored">
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Debe estar seleccionado el proyecto <code>vmexamples-userX</code>, reemplazando <code>userX</code> por el usuario que estés utilizando.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cleanup"><a class="anchor" href="#cleanup"></a>Limpieza del entorno</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A continuación borraremos los recursos que hemos utilizado para que la siguiente persona pueda efectuar el lab.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Vuelve a la pestaña <strong>Operators</strong> &#8594; <strong>Installed Operators</strong> y selecciona <strong>OADP Operator</strong>.</p>
+</li>
+<li>
+<p>Cambia a la pestaña de <strong>Backup</strong> y borra el backup que hemos creado.</p>
+</li>
+<li>
+<p>Ahora cambia a la pestaña de <strong>Restore</strong> y borra el restore que hemos creado.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="summary"><a class="anchor" href="#summary"></a>Conclusiones</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>La protección de las máquinas virtuales es un aspecto crítico de una plataforma de virtualización. OpenShift Virtualization proporciona múltiples métodos que permiten la protección nativa, por ejemplo, utilizando OADP o permitiendo la integración con otras soluciones de terceros. Si tienes cualquier duda acerca de cómo proteger las máquinas virtuales, no dudes en consultar a cualquiera de los redhatters en el área de conversación.
+¡Muchas gracias por tu interés en OpenShift Virtualization!</p>
+</div>
+</div>
+</div>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
   <div class="toc-menu"></div>
