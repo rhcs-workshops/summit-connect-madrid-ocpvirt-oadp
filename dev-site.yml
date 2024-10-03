@@ -4,7 +4,7 @@ runtime:
 site:
   title: Summit-Connect-Madrid-OCPVirt-OADP
   url: https://github.com/rhcs-workshops/summit-connect-madrid-ocpvirt-oadp
-  start_page: summit-connect-madrid-ocpvirt-oadp::index.adoc
+  start_page: summit-ocpvirt-oadp-lab::index.adoc
 
 content:
   sources:
