@@ -1,5 +1,6 @@
-name: summit-ocpvirt-oadp-lab
-title: Summit Connect Madrid - Backup y Restore de Máquinas Virtuales
+name: template-tutorial
+title: Backup y Restore de máquinas virtuales
+
 version: master
 nav:
   - modules/ROOT/nav.adoc
