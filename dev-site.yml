@@ -6,6 +6,7 @@ site:
   url: https://github.com/rhcs-workshops/summit-connect-madrid-ocpvirt-oadp
   start_page: template-tutorial::index.adoc
 
+
 content:
   sources:
     - url: .
