@@ -18,6 +18,9 @@ Tras realizar el backup, borraremos la máquina y la recuperaremos gracias al ba
 Antes de empezar con el backup, debemos comprobar que existe una máquina virtual en nuestro namespace (o proyecto). El nombre de dicho namespace es `vmexamples-userX` sustituyendo `userX` por el usuario que estemos utilizando. Navega a *Virtualization* -> *VirtualMachines* y comprueba que existe una VM con el nombre `fedora01`. Comprueba que el namespace es el correcto.
 . Si no encuentras la máquina, por favor ponte en contacto con alguno de los redhatters que está asistiendo el lab.
 
+image::Backup/011_CheckVM.png[]
+
+
 [#backup]
 == Crear un backup de una máquina virtual
 
